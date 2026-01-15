@@ -41,14 +41,12 @@ router.post('/signup', async (req, res) => {
     })
 
     await user.save()
-    const emailSent = await sendOTP(email, otp)
+    // const emailSent = await sendOTP(email, otp)
 
     res.status(201).json({
-      message: emailSent
-        ? 'Signup successful. OTP sent to your email.'
-        : 'Signup successful, but email failed to send. Check backend terminal for the code.',
+      message: 'Signup successful. Please verify OTP.',
       userId: user._id,
-      debug_hint: 'Use 123456 for testing if needed'
+      debug_hint: 'Use 123456 for testing'
     })
   } catch (error) {
     res.status(500).json({ message: 'Signup failed', error: error.message })
@@ -114,12 +112,10 @@ router.post('/login', async (req, res) => {
     user.otp = otp
     user.otpExpiry = new Date(Date.now() + 10 * 60000)
     await user.save()
-    const emailSent = await sendOTP(user.email, otp)
+    // const emailSent = await sendOTP(user.email, otp)
 
     res.json({
-      message: emailSent
-        ? 'OTP sent to your email.'
-        : 'OTP generation successful, but email delivery failed. Check terminal.',
+      message: 'OTP generation successful.',
       userId: user._id,
       debug_hint: 'Use 123456 for testing'
     })
